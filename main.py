@@ -1,5 +1,7 @@
+from app.detection.box import Box
+from app.detection.facedetetion import ImageProcess, filterbysize
 import cv2
-import sys
+import sys, os
 
 def funtion(file):
     print(f'File location: {file}')
@@ -8,29 +10,39 @@ def funtion(file):
     faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
     faces = faceCascade.detectMultiScale(
         gray,
-        scaleFactor=1.1,
+        scaleFactor=1.2,
         minNeighbors=3,
         minSize=(30, 30)
-    ) 
-    areaImg = image.shape[0] * image.shape[1]
-    print("Área total de la imagen:", areaImg)
-    print(type(faces))
-    print(str(faces))
-    print("Found {0} Faces!".format(len(faces)))
-    realfaces = []
-    for (x, y, w, h) in faces:
-        areaPercentage_face = 100 * (w * h)/areaImg
-        if areaPercentage_face > 1:
-            print(f'area Face -> {w * h} - {areaPercentage_face} %')
-            cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 5)
-            roi_color = image[y:y + h, x:x + w]
-            print("[INFO] Object found. Saving locally.")
-            cv2.imwrite(str(w) + str(h) + '_faces.jpg', roi_color)
-
-
+    )
+    faces = filterbysize(faces,(image.shape[0] * image.shape[1]),verbose=True)  #Filter by Total area relation
+    new_faces = []
+    # check intersections
+    for i in range(len(faces)):
+        for j in range(i + 1,len(faces)):
+            if faces[i].intercepts(faces[j]) is False:
+                new_faces.append(faces[i])
+            # print(f'{i} con {j}')
+            # print(f'Intercepcion ',faces[i].intercepts(faces[j]))
+    print(faces)
+    for face in faces:
+        print (f'S point {face.get_sPoint()} E point {face.get_ePoint()}')
+        cv2.rectangle(image, face.get_sPoint(), face.get_ePoint(), (0, 255, 0), 5)
+        face.get_amplify(125)
+        print (f'S point {face.get_sPoint()} E point {face.get_ePoint()}')
+        cv2.rectangle(image, face.get_sPoint(), face.get_ePoint(), (255, 0, 0), 5)
+        print('\n')
     status = cv2.imwrite('faces_detected.jpg', image)
     print ("Image faces_detected.jpg written to filesystem: ",status)
 
+def dirfor(dir):
+    for subdir, dirs, files in os.walk(dir):
+        for file in files:
+            if(file.endswith(".jpg")):
+                print(os.path.join(subdir, file))
+                print(file)
+            # ImageProcess(f'img/input/{numberPath}.jpg')
+
+
 if __name__ == '__main__':
     numberPath = sys.argv[1]
-    funtion(f'img/{numberPath}.jpg')
+    dirfor(f'img/input/')
