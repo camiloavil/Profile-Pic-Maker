@@ -10,6 +10,9 @@ __pycache__/
 # Archivos de registro
 *.log
 
+# Files .jpg
+*.jpg
+
 # Archivos de base de datos SQLite
 *.sqlite3
 
