@@ -6,6 +6,7 @@ env/
 # Archivos generados por Python
 *.pyc
 __pycache__/
+__init__.py 
 
 # Archivos de registro
 *.log
