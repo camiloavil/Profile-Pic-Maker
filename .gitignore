@@ -1,0 +1,20 @@
+# Entornos virtuales
+venv/
+env/
+*.venv/
+
+# Archivos generados por Python
+*.pyc
+__pycache__/
+
+# Archivos de registro
+*.log
+
+# Archivos de base de datos SQLite
+*.sqlite3
+
+# Configuración de entorno de desarrollo
+.env
+
+# Carpeta de configuración de VSCode
+.vscode/
