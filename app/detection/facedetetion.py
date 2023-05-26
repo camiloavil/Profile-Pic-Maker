@@ -3,12 +3,12 @@ import cv2, os
 
 percentageSize = 0.1
 
-def dirfor(dir):        #iterate into a directory looking for every jpg file
+def scaning_dir(dir, testing = False):        #iterate into a directory looking for every jpg file
     for subdir, dirs, files in os.walk(dir):
         for file in files:
             if(file.endswith(".jpg")):
                 print(f"let's check this image -> {os.path.join(subdir, file)}")
-                ImageProcess(os.path.join(subdir, file))
+                ImageProcess(os.path.join(subdir, file), testing)
 
 def filterbysize(squares, totalarea, verbose = False):
     if verbose: print(f'Get {len(squares)} faces')

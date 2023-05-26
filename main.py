@@ -1,5 +1,5 @@
 from app.detection.box import Box
-from app.detection.facedetetion import dirfor, filterbysize
+from app.detection.facedetetion import scaning_dir, filterbysize
 import cv2
 import sys, os
 
@@ -37,4 +37,4 @@ def funtion(file):
 
 if __name__ == '__main__':
     # numberPath = sys.argv[1]
-    dirfor(f'img/input/')
+    scaning_dir(f'img/input/', testing=True)
