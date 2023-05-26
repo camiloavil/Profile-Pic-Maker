@@ -22,6 +22,9 @@ class Box:
     def get_y(self):
         return (self.yi, self.yf)
     
+    def get_points(self):
+        return ((self.xi,self.xf),(self.yi,self.yf))
+
     def get_amplify(self, amp):
         x_amp = self.w * amp/100
         y_amp = self.h * amp/100

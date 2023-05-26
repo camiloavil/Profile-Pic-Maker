@@ -26,21 +26,27 @@ class ImageProcess:
     def __init__(self, file:str) -> None:
         self.urlname = file
         self.image = cv2.imread(file)
+        filename_ = os.path.basename(self.urlname).split(".")[0]
         faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
         faces = faceCascade.detectMultiScale(cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY), scaleFactor=1.2, minNeighbors=3, minSize=(30, 30)) 
         faces = filterbysize(faces,(self.image.shape[0] * self.image.shape[1]),verbose=False)  #Filter by Total area relation  
+        print(f'\t[INFO] {self.urlname} dimensions. {self.image.shape[1]} x {self.image.shape[0]}')
         print(f'\t[INFO] {len(faces)} selfie detected.')
         Nn=1
         for face in faces:
-            # cv2.rectangle(self.image, face.get_sPoint(), face.get_ePoint(), (0, 255, 0), 5)
+            urlname_ = f'img/{filename_}_out{str(Nn)}_faces.jpg'
+            print(f'\t[INFO] {urlname_} is goning to be save.',end='  ')
+            print(f'selfie dimension : {str(face.get_points())}',end=' -> ')
+            cv2.rectangle(self.image, face.get_sPoint(), face.get_ePoint(), (0, 255, 0), 5)
             face.get_amplify(125)
-            # cv2.rectangle(self.image, face.get_sPoint(), face.get_ePoint(), (255, 0, 0), 5)
-            # roi_color = self.image[y:y + h, x:x + w]
-            roi_color = self.image[face.yi : face.yf, face.xi : face.xf]
-            filename = os.path.basename(self.urlname).split(".")[0]
-            urlname = f'img/{filename}_out{str(Nn)}_faces.jpg'
-            print(f'\t[INFO] {urlname} is goning to be save.')
-            cv2.imwrite(urlname, roi_color)
+            cv2.rectangle(self.image, face.get_sPoint(), face.get_ePoint(), (255, 0, 0), 5)
+            roi_color = self.image[face.yi : face.yf, face.xi : face.xf]       # Select just the selfie area
+            # print(f'\t\t [TEST] {str(roi_color)}')
+            if len(roi_color) > 0:
+                cv2.imwrite(urlname_, roi_color)
+                print('[SUCCESS]')
+            else:
+                print(f'[ERROR] {urlname_} image couldnt process.')
             Nn += 1
         cv2.imwrite('faces_detected.jpg', self.image)
         
