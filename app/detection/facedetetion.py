@@ -23,7 +23,7 @@ def filterbysize(squares, totalarea, verbose = False):
     return faces
 
 class ImageProcess:
-    def __init__(self, file:str) -> None:
+    def __init__(self, file:str, testing = False) -> None:
         self.urlname = file
         self.image = cv2.imread(file)
         filename_ = os.path.basename(self.urlname).split(".")[0]
@@ -37,9 +37,9 @@ class ImageProcess:
             urlname_ = f'img/{filename_}_out{str(Nn)}_faces.jpg'
             print(f'\t[INFO] {urlname_} is goning to be save.',end='  ')
             print(f'selfie dimension : {str(face.get_points())}',end=' -> ')
-            cv2.rectangle(self.image, face.get_sPoint(), face.get_ePoint(), (0, 255, 0), 5)
+            if testing: cv2.rectangle(self.image, face.get_sPoint(), face.get_ePoint(), (0, 255, 0), 5)
             face.get_amplify(125)
-            cv2.rectangle(self.image, face.get_sPoint(), face.get_ePoint(), (255, 0, 0), 5)
+            if testing: cv2.rectangle(self.image, face.get_sPoint(), face.get_ePoint(), (255, 0, 0), 5)
             roi_color = self.image[face.yi : face.yf, face.xi : face.xf]       # Select just the selfie area
             # print(f'\t\t [TEST] {str(roi_color)}')
             if len(roi_color) > 0:
