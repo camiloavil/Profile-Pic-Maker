@@ -23,6 +23,9 @@ def filterbysize(squares, totalarea, verbose = False):
     return faces
 
 class ImageProcess:
+    _setting_scaleFactor=1.2
+    _setting_minNeighbors=3
+    _setting_minSize=(30, 30)
     def __init__(self, file:str, testing = False) -> None:
         self.urlname = file
         self.image = cv2.imread(file)
@@ -34,19 +37,18 @@ class ImageProcess:
         print(f'\t[INFO] {len(faces)} selfie detected.')
         Nn=1
         for face in faces:
+            if testing: cv2.rectangle(self.image, face.get_startPoint(), face.get_endPoint(), (0, 255, 0), 5)
+            face.get_amplify(125)
             urlname_ = f'img/{filename_}_out{str(Nn)}_faces.jpg'
             print(f'\t[INFO] {urlname_} is goning to be save.',end='  ')
             print(f'selfie dimension : {str(face.get_points())}',end=' -> ')
-            if testing: cv2.rectangle(self.image, face.get_sPoint(), face.get_ePoint(), (0, 255, 0), 5)
-            face.get_amplify(125)
-            if testing: cv2.rectangle(self.image, face.get_sPoint(), face.get_ePoint(), (255, 0, 0), 5)
+            if testing: cv2.rectangle(self.image, face.get_startPoint(), face.get_endPoint(), (255, 0, 0), 5)
             roi_color = self.image[face.yi : face.yf, face.xi : face.xf]       # Select just the selfie area
-            # print(f'\t\t [TEST] {str(roi_color)}')
             if len(roi_color) > 0:
                 cv2.imwrite(urlname_, roi_color)
                 print('[SUCCESS]')
             else:
                 print(f'[ERROR] {urlname_} image couldnt process.')
             Nn += 1
-        cv2.imwrite('faces_detected.jpg', self.image)
+        if testing: cv2.imwrite('faces_detected.jpg', self.image)
         
