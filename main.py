@@ -1,5 +1,5 @@
 from app.detection.box import Box
-from app.detection.facedetetion import ImageProcess, filterbysize
+from app.detection.facedetetion import dirfor, filterbysize
 import cv2
 import sys, os
 
@@ -34,15 +34,7 @@ def funtion(file):
     status = cv2.imwrite('faces_detected.jpg', image)
     print ("Image faces_detected.jpg written to filesystem: ",status)
 
-def dirfor(dir):
-    for subdir, dirs, files in os.walk(dir):
-        for file in files:
-            if(file.endswith(".jpg")):
-                print(os.path.join(subdir, file))
-                print(file)
-            # ImageProcess(f'img/input/{numberPath}.jpg')
-
 
 if __name__ == '__main__':
-    numberPath = sys.argv[1]
+    # numberPath = sys.argv[1]
     dirfor(f'img/input/')
