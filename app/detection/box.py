@@ -10,10 +10,10 @@ class Box:
         self.yf = self.yi + self.h
         self.area = self.w * self.h
     
-    def get_sPoint(self):   #get star point
+    def get_startPoint(self):   #get star point
         return (self.xi, self.yi)
     
-    def get_ePoint(self):   #get end point
+    def get_endPoint(self):   #get end point
         return (self.xf, self.yf)
     
     def get_x(self):
@@ -22,6 +22,9 @@ class Box:
     def get_y(self):
         return (self.yi, self.yf)
     
+    def get_points(self):
+        return ((self.xi,self.xf),(self.yi,self.yf))
+
     def get_amplify(self, amp):
         x_amp = self.w * amp/100
         y_amp = self.h * amp/100
@@ -29,6 +32,8 @@ class Box:
         self.yi = int(self.yi - y_amp/2)
         self.xf = int(self.xf + x_amp/2)
         self.yf = int(self.yf + y_amp/2)
+        if self.xi < 0: self.xi = 0
+        if self.yi < 0: self.yi = 0
 
     def intercepts(self,boxB):
         if self.xf < boxB.xi or self.xi > boxB.xf:      # the boxes doesnt cross on axis x
