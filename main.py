@@ -37,4 +37,4 @@ def funtion(file):
 
 if __name__ == '__main__':
     # numberPath = sys.argv[1]
-    scaning_dir(f'img/input/', testing=True)
+    scaning_dir(f'img/input/', testing=False)
