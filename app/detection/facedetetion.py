@@ -3,7 +3,7 @@ import cv2, os
 
 percentageSize = 0.1
 
-def scaning_dir(dir, testing = False):        #iterate into a directory looking for every jpg file
+def scaning_dir(dir: str, testing = False):        #iterate into a directory looking for every jpg file
     for subdir, dirs, files in os.walk(dir):
         for file in files:
             if(file.endswith(".jpg")):
@@ -25,14 +25,14 @@ def filterbysize(squares, totalarea, verbose = False):
 class ImageProcess:
     _setting_scaleFactor=1.2
     _setting_minNeighbors=3
-    _setting_minSize=(30, 30)
+    _setting_minSize=(30, 30)   #check this parameter for filter selfies
     def __init__(self, file:str, testing = False) -> None:
         self.urlname = file
         self.image = cv2.imread(file)
         filename_ = os.path.basename(self.urlname).split(".")[0]
         faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
         faces = faceCascade.detectMultiScale(cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY), scaleFactor=1.2, minNeighbors=3, minSize=(30, 30)) 
-        faces = filterbysize(faces,(self.image.shape[0] * self.image.shape[1]),verbose=False)  #Filter by Total area relation  
+        faces = filterbysize(faces,(self.image.shape[0] * self.image.shape[1]),verbose=False)  #Filter by Total area relation  THIS CLOUD BE GONE BECAUSE _setting_minSize
         print(f'\t[INFO] {self.urlname} dimensions. {self.image.shape[1]} x {self.image.shape[0]}')
         print(f'\t[INFO] {len(faces)} selfie detected.')
         Nn=1
