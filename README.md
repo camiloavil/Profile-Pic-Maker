@@ -1,6 +1,6 @@
-# SelfieMaker 📸 🤳
+# ProfilePicMaker 📸 🤳
 
-SelfieMaker is a Python script that allows you to take any photo and extract the faces present in the image, creating the effect of a selfie. It is a fun and easy-to-use tool that can transform your regular photos into selfie-style images.
+ProfilePicMaker is a Python script that allows you to take any photo and extract the faces present in the image, creating the effect of a selfie. It is a fun and easy-to-use tool that can transform your regular photos into selfie-style images.
 
 # Features
 
@@ -18,25 +18,22 @@ Python packages: OpenCV, numpy.
 
 ## How to use the project?
 
-#### Step 1
-
-Clone this repository to your local machine:
-
+#### Clone this repository to your local machine:
 ```bash
 git clone https://github.com/camiloavil/selfiemaker.git
 ```
 
-#### Step 2
-
-Set up a virtual environment on python for the project
+#### Set up and activate a virtual environment on python for the project
 ```bash
 python -m venv env
+source env/bin/activate
 ```
-#### Step 3
-Install the dependencies using pip:
+
+#### Install the dependencies using pip:
 ```bash
 pip install -r requirements.txt
 ```
+
 # Contributions
 All are welcome. If you find any issues or have ideas to improve this project, please open an issue or submit a pull request.
 
