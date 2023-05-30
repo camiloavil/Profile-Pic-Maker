@@ -6,7 +6,7 @@ from PIL import Image
 
 
 import typer
-from app.models.pictures import Bigpic
+from app.models.pictures import BigPic
 
 app = typer.Typer()
 
@@ -33,7 +33,7 @@ def dir(dir: str):
 @app.command()
 def file(file: str):
     print(f"Cheking '{file}' image")
-    pic_faces = Bigpic(file,verbose=True).get_faces()
+    pic_faces = BigPic(file,verbose=True).get_faces()
 
 
 @app.command()

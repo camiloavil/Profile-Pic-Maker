@@ -16,15 +16,20 @@ class Picture():
 
     def get_url(self):
         return self._url
+    
+    def save(self,url:str):
+        pass
 
-class Bigpic(Picture):
+class BigPic(Picture):
     def get_faces(self):
         if self._url is None:
-            if Picture._verbose: print(f'[ERROR][Bigpic] Sorry there is not a pic')
+            if Picture._verbose: print(f'[ERROR][BigPic] Sorry there is not a pic')
             return None
         
-        if Picture._verbose: print(f'[INFO][Bigpic] process to detect Faces expected List of faces')
+        if Picture._verbose: print(f'[INFO][BigPic] process to detect Faces expected List of faces')
         faces = DetectingFaces_OP(file=self._url).get_PIL_faces()
+        print(faces)
+        faces = [FacePic(face) for face in faces]
         print(faces)
         # face = faces[0]
         # imagen_rgb = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
@@ -35,8 +40,6 @@ class Bigpic(Picture):
 
 class FacePic(Picture):
     def __init__(self, url: str, img: Image) -> None:
+        if Picture._verbose: print(f'[INFO][FacePic] init objeto FacePic')
         super().__init__(url)
         self.pil_image= img
-
-    def save(self,url:str):
-        pass
