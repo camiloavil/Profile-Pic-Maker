@@ -36,6 +36,7 @@ def file(file: str):
     pic_faces = BigPic(file,verbose=True).get_faces()   #get a list of FacePic objects
     for face in pic_faces:
         face.removeBG()
+        face.show()
 
 @app.command()
 def test():

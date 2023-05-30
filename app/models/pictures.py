@@ -1,7 +1,7 @@
 from app.detection.facedetetion import DetectingFaces_OP
-from app.removeBack.removelocal import removebg
 from typing import Optional
 from PIL import Image
+from rembg import remove
 import os
 
 class Picture(): 
@@ -46,4 +46,7 @@ class FacePic(Picture):
 
     def removeBG(self):
         if Picture._verbose: print(f"[INFO][FacePic]removeBG Let's remove background")
-        removebg(self.pil_image)
+        self.pil_image=remove(self.pil_image)
+
+    def addBG(self):
+        if Picture._verbose: print(f"[INFO][FacePic]addBG Let's add some background")
