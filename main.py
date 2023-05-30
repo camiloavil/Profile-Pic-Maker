@@ -1,4 +1,3 @@
-from app.detection.facedetetion import scaning_dir
 from app.removeBack.removebg import removeBG_one_pic
 from app.merging.merging import generate_gradient, merge_images
 import os, time
@@ -33,11 +32,10 @@ def dir(dir: str):
 
 @app.command()
 def file(file: str):
-    if os.path.isfile(file) and (file.lower().endswith('.jpg') or file.lower().endswith('.png')):
-        print(f"Cheking '{file}' image")
-        pic = Bigpic(file).get_faces()
-    else:
-        print(f'[ERROR] Sorry "{file}" is not an Image file (jpg or png)')
+    print(f"Cheking '{file}' image")
+    pic = Bigpic(file,debug=True).get_faces()
+    print(f'[INFO][main] {pic} - {str(pic)} - {type(pic)}')
+
 
 @app.command()
 def test():
