@@ -36,6 +36,7 @@ def file(file: str):
     pic_faces = BigPic(file,verbose=True).get_faces()   #get a list of FacePic objects
     for face in pic_faces:
         face.removeBG()
+        face.addBG()
         face.show()
 
 @app.command()
@@ -55,10 +56,3 @@ def test():
 
 if __name__ == '__main__':
     app()
-    # numberPath = sys.argv[1]
-    # scaning_dir(f'img/input/', testing=False)
-    # scaning_dir_execute(f'img/')
-
-    # /home/camilo/software/MyPy/projectPhoto/img/IMG_20230424_073036_out1_faces.jpg
-    # removeBG_one_pic('/home/camilo/software/MyPy/projectPhoto/img/IMG_20230509_155246_out2_faces.jpg')
-
