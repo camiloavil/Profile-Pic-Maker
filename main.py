@@ -33,8 +33,7 @@ def dir(dir: str):
 @app.command()
 def file(file: str):
     print(f"Cheking '{file}' image")
-    pic = Bigpic(file,debug=True).get_faces()
-    print(f'[INFO][main] {pic} - {str(pic)} - {type(pic)}')
+    pic_faces = Bigpic(file,verbose=True).get_faces()
 
 
 @app.command()
