@@ -34,7 +34,8 @@ def dir(dir: str):
 def file(file: str):
     print(f"Cheking '{file}' image")
     pic_faces = BigPic(file,verbose=True).get_faces()
-
+    for face in pic_faces:
+        face.removeBG()
 
 @app.command()
 def test():
