@@ -11,8 +11,9 @@ __init__.py
 # Archivos de registro
 *.log
 
-# Files .jpg
+# Files .jpg .png
 *.jpg
+*.png
 
 # Archivos de base de datos SQLite
 *.sqlite3

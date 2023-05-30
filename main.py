@@ -1,40 +1,58 @@
-from app.detection.box import Box
-from app.detection.facedetetion import scaning_dir, filterbysize
-import cv2
-import sys, os
+from app.removeBack.removeCloud import removeBG_one_pic
+from app.merging.merging import generate_gradient, merge_images
+import os, time
 
-def funtion(file):
-    print(f'File location: {file}')
-    image = cv2.imread(file)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
-    faces = faceCascade.detectMultiScale(
-        gray,
-        scaleFactor=1.2,
-        minNeighbors=3,
-        minSize=(30, 30)
-    )
-    faces = filterbysize(faces,(image.shape[0] * image.shape[1]),verbose=True)  #Filter by Total area relation
-    new_faces = []
-    # check intersections
-    for i in range(len(faces)):
-        for j in range(i + 1,len(faces)):
-            if faces[i].intercepts(faces[j]) is False:
-                new_faces.append(faces[i])
-            # print(f'{i} con {j}')
-            # print(f'Intercepcion ',faces[i].intercepts(faces[j]))
-    print(faces)
-    for face in faces:
-        print (f'S point {face.get_sPoint()} E point {face.get_ePoint()}')
-        cv2.rectangle(image, face.get_sPoint(), face.get_ePoint(), (0, 255, 0), 5)
-        face.get_amplify(125)
-        print (f'S point {face.get_sPoint()} E point {face.get_ePoint()}')
-        cv2.rectangle(image, face.get_sPoint(), face.get_ePoint(), (255, 0, 0), 5)
-        print('\n')
-    status = cv2.imwrite('faces_detected.jpg', image)
-    print ("Image faces_detected.jpg written to filesystem: ",status)
+from PIL import Image
+
+
+import typer
+from app.models.pictures import BigPic
+
+app = typer.Typer()
+
+def scaning_dir_execute(dir):        #iterate into a directory looking for every jpg file
+    for subdir, dirs, files in os.walk(dir):
+        for file in files:
+            if(file.endswith(".jpg")):
+                print(f"let's check this image -> {os.path.join(subdir, file)}")
+                removeBG_one_pic(os.path.join(subdir, file))
+                time.sleep(15)      #to no overprocess the API and get error
+                # ImageProcess(os.path.join(subdir, file), )
+
+@app.command()
+def dir(dir: str):
+    if os.path.isdir(dir):
+        print(f'Checking {dir} ...')
+        for file in os.listdir(dir):
+            if os.path.isfile(os.path.join(dir, file)) and file.endswith(".jpg"):
+                # print(f"\tlet's check this image -> {os.path.join(subdir, file)}")
+                print(f"\tlet's check this image -> {os.path.join(dir,file)}")
+    else:
+        print(f'[ERROR] Sorry "{dir}" is not an active directory')
+
+@app.command()
+def file(file: str):
+    print(f"Cheking '{file}' image")
+    pic_faces = BigPic(file,verbose=True).get_faces()   #get a list of FacePic objects
+    for face in pic_faces:
+        face.removeBG()
+        face.addBG()
+        face.show()
+
+@app.command()
+def test():
+    print(f'Testing ....')
+    pic = Image.open('img/transparencies/IMG_20230424_120420_TIMEBURST8_out1_faces.png').convert("RGBA")
+    print(f'Pic size {pic.size}')
+    # pic.show()
+    color_white = (255,255, 255)       # blanco
+    color_black = (0.0,0)       # Negro
+    color_blue = (135, 206, 250)   # Azul claro
+    # color_start = (135, 206, 250)   # Azul claro
+    back = generate_gradient(500, color_blue, color_white)
+    merge_images(pic, back)
+
 
 
 if __name__ == '__main__':
-    # numberPath = sys.argv[1]
-    scaning_dir(f'img/input/', testing=True)
+    app()
