@@ -1,4 +1,4 @@
-from app.removeBack.removebg import removeBG_one_pic
+from app.removeBack.removeCloud import removeBG_one_pic
 from app.merging.merging import generate_gradient, merge_images
 import os, time
 
@@ -33,7 +33,7 @@ def dir(dir: str):
 @app.command()
 def file(file: str):
     print(f"Cheking '{file}' image")
-    pic_faces = BigPic(file,verbose=True).get_faces()
+    pic_faces = BigPic(file,verbose=True).get_faces()   #get a list of FacePic objects
     for face in pic_faces:
         face.removeBG()
 
