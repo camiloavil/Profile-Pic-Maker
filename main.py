@@ -1,9 +1,7 @@
 from app.removeBack.removeCloud import removeBG_one_pic
-from app.merging.merging import generate_gradient, merge_images
-import os, time
-
-from PIL import Image
-
+from app.models.colors import Colors
+import os
+import time
 
 import typer
 from app.models.pictures import BigPic
@@ -36,23 +34,14 @@ def file(file: str):
     pic_faces = BigPic(file,verbose=True).get_faces()   #get a list of FacePic objects
     for face in pic_faces:
         face.removeBG()
-        face.addBG()
-        face.show()
+        # face.addBG(Color.BLUE_SKY,Color.BLACK)
+        # face.addBGPalette(Colors.BlueSkyUIColors)
+        face.addBGPalette(Colors.RED_TO_BLACK)
+        # face.show()
 
 @app.command()
 def test():
-    print(f'Testing ....')
-    pic = Image.open('img/transparencies/IMG_20230424_120420_TIMEBURST8_out1_faces.png').convert("RGBA")
-    print(f'Pic size {pic.size}')
-    # pic.show()
-    color_white = (255,255, 255)       # blanco
-    color_black = (0.0,0)       # Negro
-    color_blue = (135, 206, 250)   # Azul claro
-    # color_start = (135, 206, 250)   # Azul claro
-    back = generate_gradient(500, color_blue, color_white)
-    merge_images(pic, back)
-
-
+    print('Testing ....')
 
 if __name__ == '__main__':
     app()
