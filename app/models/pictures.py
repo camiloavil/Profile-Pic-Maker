@@ -1,4 +1,6 @@
 from app.detection.facedetetion import DetectingFaces_OP
+from app.models.background import Background
+from app.models.colors import Color, Colors
 from typing import Optional
 from PIL import Image
 from rembg import remove
@@ -48,5 +50,14 @@ class FacePic(Picture):
         if Picture._verbose: print(f"[INFO][FacePic]removeBG Let's remove background")
         self.pil_image=remove(self.pil_image)
 
-    def addBG(self):
-        if Picture._verbose: print(f"[INFO][FacePic]addBG Let's add some background")
+    def addBGPalette(self, colors: Colors):
+        self.addBG(colors.value[0], colors.value[1])
+
+    def addBG(self, colorTop: Color, colorBottom: Color):
+        if Picture._verbose: print(f"[INFO][FacePic]addBG Let's add some background {self.pil_image.size}")
+        back = Background(self.pil_image.size)
+        # back.set_back_gradientV(colorTop,colorBottom,0.1)
+        back.set_back_gradientC(colorTop,colorBottom, 0.3, 0.95)
+        # back.set_contorno()
+        merged_image = Image.alpha_composite(back.getBackground(), self.pil_image)
+        merged_image.show()
