@@ -2,7 +2,8 @@ from app.detection.facedetetion import DetectingFaces_OP
 from app.models.background import Background
 from app.models.colors import Color, Colors
 from typing import Optional
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFilter
+
 from rembg import remove
 import os
 
@@ -47,9 +48,31 @@ class FacePic(Picture):
         self.pil_image.show()
 
     def removeBG(self):
-        if Picture._verbose: print(f"[INFO][FacePic]removeBG Let's remove background")
+        """This function removes the th background of the pic using rembg module"""
         self.pil_image=remove(self.pil_image)
-
+    
+    def set_contour(self):
+        """Set the shape of image"""
+        radius = 0.975*min(self.pil_image.size) // 2
+        center_x = self.pil_image.size[0] // 2
+        center_y = self.pil_image.size[1] // 2
+        mask = Image.new("L", (self.pil_image.size), 0)  # Máscara para el área fuera del círculo
+        draw_mask = ImageDraw.Draw(mask)
+        # Dibujar círculo en la máscara
+        draw_mask.ellipse((center_x - radius, 
+                           center_y - radius, 
+                           center_x + radius, 
+                           center_y + radius), 
+                           fill=255)
+        # mask.show()
+        self.pil_image.putalpha(mask)  # Aplicar la máscara como transparencia
+    
+    def setBlur(self,blur: int):
+        # Aplicar filtro de desenfoque gaussiano
+        blurred_background = self.pil_image.filter(ImageFilter.GaussianBlur(blur))  
+        # Combinar imagen difuminada con la original  
+        self.pil_image = Image.alpha_composite(blurred_background, self.pil_image)    
+    
     def addBGPalette(self, colors: Colors):
         self.addBG(colors.value[0], colors.value[1])
 
@@ -59,5 +82,5 @@ class FacePic(Picture):
         # back.set_back_gradientV(colorTop,colorBottom,0.1)
         back.set_back_gradientC(colorTop,colorBottom, 0.3, 0.95)
         # back.set_contorno()
-        merged_image = Image.alpha_composite(back.getBackground(), self.pil_image)
-        merged_image.show()
+        self.pil_image = Image.alpha_composite(back.getBackground(), self.pil_image)
+        # merged_image.show()

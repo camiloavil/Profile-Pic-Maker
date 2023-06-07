@@ -35,9 +35,10 @@ def file(file: str):
     for face in pic_faces:
         face.removeBG()
         # face.addBG(Color.BLUE_SKY,Color.BLACK)
-        # face.addBGPalette(Colors.BlueSkyUIColors)
-        face.addBGPalette(Colors.RED_TO_BLACK)
-        # face.show()
+        face.addBGPalette(Colors.WET_ASPHALT_TO_GREEN_SEA)
+        face.set_contour()
+        face.setBlur(30)
+        face.show()
 
 @app.command()
 def test():

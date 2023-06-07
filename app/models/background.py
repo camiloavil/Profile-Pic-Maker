@@ -78,12 +78,12 @@ class Background():
                     t = (pxl_radius - r_IBorder) / (r_max - r_IBorder)
                     color = self.interpolate_color(colorCenter_, colorOuter_, t)
                     draw.point((x, y), fill=color)
-                elif pxl_radius < r_max:
-                    #last ring of the circle this is a Try for a fade efect
-                    t = 1 - (pxl_radius - r_IIBorder) / (r_max - r_IIBorder) * 0.9
-                    if random.random() <= t:
-                        draw.point((x, y), fill=(colorOuter_[0],colorOuter_[1],colorOuter_[2],int(t*200)))
-                        # print(f'Center{int(t*255)} - {colorOuter_} - {(colorOuter_[0],colorOuter_[1],colorOuter_[2],int(t*255))}')
+                # elif pxl_radius < r_max:
+                #     #last ring of the circle this is a Try for a fade efect
+                #     t = 1 - (pxl_radius - r_IIBorder) / (r_max - r_IIBorder) * 0.9
+                #     if random.random() <= t:
+                #         draw.point((x, y), fill=(colorOuter_[0],colorOuter_[1],colorOuter_[2],int(t*200)))
+                #         # print(f'Center{int(t*255)} - {colorOuter_} - {(colorOuter_[0],colorOuter_[1],colorOuter_[2],int(t*255))}')
 
     def set_back_gradientCefect(self, colorCenter: Color, colorOuter: Color, pColorcircle: float, p_radius: float):
         colorCenter_ = colorCenter.value
@@ -104,19 +104,6 @@ class Background():
                         t = (distance - start_distance) / (max_radius - start_distance)
                         color = self.interpolate_color(colorCenter_, colorOuter_, t)
                         draw.point((x, y), fill=color)
-
-  
-
-    def set_contorno(self, blur: int = 20):
-        radius = 0.9*min(self._pix_w, self._pix_h) // 2
-        center_x = self._pix_w // 2
-        center_y = self._pix_h // 2
-        mask = Image.new("L", (self._pix_w, self._pix_h), 0)  # Máscara para el área fuera del círculo
-        draw_mask = ImageDraw.Draw(mask)
-        draw_mask.ellipse((center_x - radius, center_y - radius, center_x + radius, center_y + radius), fill=255)  # Dibujar círculo en la máscara
-        self._background.putalpha(mask)  # Aplicar la máscara como transparencia
-        blurred_background = self._background.filter(ImageFilter.GaussianBlur(blur))  # Aplicar filtro de desenfoque gaussiano
-        self._background = Image.alpha_composite(blurred_background, self._background)  # Combinar imagen difuminada con la original
 
     def getBackground(self):
         return self._background
