@@ -35,8 +35,8 @@ def file(file: str):
     for face in pic_faces:
         face.removeBG()
         # face.addBG(Color.BLUE_SKY,Color.BLACK)
-        # face.addBGPalette(Colors.BlueSkyUIColors)
-        face.addBGPalette(Colors.RED_TO_BLACK)
+        face.addBGPalette(Colors.BLUE_SKY_TO_INDIGO)
+        # face.addBGPalette(Colors.RED_TO_BLACK)
         # face.show()
 
 @app.command()
