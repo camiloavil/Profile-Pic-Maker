@@ -80,7 +80,18 @@ class FacePic(Picture):
         if Picture._verbose: print(f"[INFO][FacePic]addBG Let's add some background {self.pil_image.size}")
         back = Background(self.pil_image.size)
         # back.set_back_gradientV(colorTop,colorBottom,0.1)
-        back.set_back_gradientC(colorTop,colorBottom, 0.3, 0.95)
-        # back.set_contorno()
+        back.set_back_gradientC(colorTop,colorBottom, 0.3)
         self.pil_image = Image.alpha_composite(back.getBackground(), self.pil_image)
         # merged_image.show()
+
+    def setBorder(self, circle_color, circle_width):
+        # Crea un objeto ImageDraw para dibujar en la imagen
+        draw = ImageDraw.Draw(self.pil_image)
+        # Obtiene las dimensiones de la self.pil_image
+        width, height = self.pil_image.size
+        # Calcula el radio de la circunferencia como la mitad de la dimensión más pequeña
+        radio = min(width, height) // 2
+        # Calcula el centro de la circunferencia
+        centro = (width // 2, height // 2)
+        # Dibuja la circunferencia
+        draw.ellipse((centro[0] - radio, centro[1] - radio, centro[0] + radio, centro[1] + radio),outline=circle_color.value, width=circle_width)
