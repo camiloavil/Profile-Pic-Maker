@@ -1,5 +1,5 @@
 from app.removeBack.removeCloud import removeBG_one_pic
-from app.models.colors import Colors
+from app.models.colors import Color, Colors
 import os
 import time
 
@@ -35,9 +35,11 @@ def file(file: str):
     for face in pic_faces:
         face.removeBG()
         # face.addBG(Color.BLUE_SKY,Color.BLACK)
-        face.addBGPalette(Colors.BLUE_SKY_TO_INDIGO)
-        # face.addBGPalette(Colors.RED_TO_BLACK)
-        # face.show()
+        face.addBGPalette(Colors.WET_ASPHALT_TO_GREEN_SEA)
+        face.set_contour()
+        face.setBorder(Color.BLACK,5)
+        face.setBlur(30)
+        face.show()
 
 @app.command()
 def test():
