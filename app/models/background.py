@@ -65,15 +65,14 @@ class Background():
         center_x = self._pix_w // 2
         center_y = self._pix_h // 2
         #se Definen radios de rango - Define radius of range
-        r_max = min(center_x, center_y)
-        r_IIBorder = int(r_max)
+        r_max = int(min(center_x, center_y))
         r_IBorder = int(r_max * pColorcircle)
         for y in range(self._pix_h):
             for x in range(self._pix_w):
                 pxl_radius = int(((x - center_x) ** 2 + (y - center_y) ** 2) ** 0.5)
                 if pxl_radius < r_IBorder: #First ring of the circle
                     draw.point((x, y), fill=colorCenter_)
-                elif pxl_radius <= r_IIBorder: #Second ring of the circle
+                elif pxl_radius <= r_max: #Second ring of the circle
                     t = (pxl_radius - r_IBorder) / (r_max - r_IBorder)
                     color = self.interpolate_color(colorCenter_, colorOuter_, t)
                     draw.point((x, y), fill=color)
