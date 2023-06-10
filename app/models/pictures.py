@@ -59,8 +59,9 @@ class FacePic(Picture):
         self.pil_image=remove(self.pil_image)
     
     def set_contour(self):
-        """Set the shape of image"""
-        radius = 0.975*min(self.pil_image.size) // 2
+        """Set the shape of image Circular for now"""
+        radius = 0.95*min(self.pil_image.size) // 2
+        self.Cborder=radius
         center_x = self.pil_image.size[0] // 2
         center_y = self.pil_image.size[1] // 2
         mask = Image.new("L", (self.pil_image.size), 0)  # Máscara para el área fuera del círculo
@@ -73,6 +74,7 @@ class FacePic(Picture):
                            fill=255)
         # mask.show()
         self.pil_image.putalpha(mask)  # Aplicar la máscara como transparencia
+        
     
     def setBlur(self,blur: int):
         # Aplicar filtro de desenfoque gaussiano
@@ -92,14 +94,29 @@ class FacePic(Picture):
         self.pil_image = Image.alpha_composite(back.getBackground(), self.pil_image)
         # merged_image.show()
 
-    def setBorder(self, circle_color, circle_width):
+    def setBorder(self, circle_color, circle_width=None):
         # Crea un objeto ImageDraw para dibujar en la imagen
         draw = ImageDraw.Draw(self.pil_image)
         # Obtiene las dimensiones de la self.pil_image
         width, height = self.pil_image.size
+        rmax = min(width, height) // 2
+        
         # Calcula el radio de la circunferencia como la mitad de la dimensión más pequeña
-        radio = min(width, height) // 2
+        if self.Cborder:
+            radio =self.Cborder
+        else:
+            radio = rmax
+            
+        if circle_width is None:
+            circle_width= int((rmax-radio)//2)
+            radio =rmax - circle_width
+              
         # Calcula el centro de la circunferencia
         centro = (width // 2, height // 2)
         # Dibuja la circunferencia
-        draw.ellipse((centro[0] - radio, centro[1] - radio, centro[0] + radio, centro[1] + radio),outline=circle_color.value, width=circle_width)
+        draw.ellipse((centro[0] - radio,
+                      centro[1] - radio, 
+                      centro[0] + radio, 
+                      centro[1] + radio),
+                      outline=circle_color.value, 
+                      width=circle_width)

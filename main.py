@@ -37,7 +37,7 @@ def file(file: str):
         # face.addBG(Color.BLUE_SKY,Color.BLACK)
         face.addBGPalette(Colors.WET_ASPHALT_TO_GREEN_SEA)
         face.set_contour()
-        face.setBorder(Color.BLACK,5)
+        face.setBorder(Color.BLACK)
         face.setBlur(30)
         face.show()
 
