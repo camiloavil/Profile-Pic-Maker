@@ -40,6 +40,11 @@ def file(file: str):
         face.setBorder(Color.BLACK)
         face.setBlur(30)
         face.show()
+        promp = input('Do you want to save it ?')
+        if promp == 'y' or promp == 'yes' or promp == 'si':
+            print("All rigth let's save it")
+        else:
+            print("Ok, don't worry")
 
 @app.command()
 def test():

@@ -66,9 +66,3 @@ class Colors(Enum):
     RedUIColors = {'top': Color.RED_500, 'bottom' : Color.BLACK}
     TestUIColors = {'top': Color.LIGHT_BLUE_A200, 'bottom' : Color.BLACK}
 
-
-# class MaterialDesignColors(Color):
-
-# class MaterialDesignAccentColors(Color):
-
-# class BootstrapColors(Color):

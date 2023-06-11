@@ -1,9 +1,9 @@
 from app.detection.facedetetion import DetectingFaces_OP
 from app.models.background import Background
 from app.models.colors import Color, Colors
+
 from typing import Optional
 from PIL import Image, ImageDraw, ImageFilter
-
 from rembg import remove
 import os
 import logging
@@ -51,6 +51,7 @@ class FacePic(Picture):
             logging.error('[FacePic]init empty objeto')
 
     def show(self):
+        """Show this pic"""
         self.pil_image.show()
 
     def removeBG(self):
@@ -64,7 +65,8 @@ class FacePic(Picture):
         self.Cborder=radius
         center_x = self.pil_image.size[0] // 2
         center_y = self.pil_image.size[1] // 2
-        mask = Image.new("L", (self.pil_image.size), 0)  # Máscara para el área fuera del círculo
+        #Máscara para el área fuera del círculo
+        mask = Image.new("L", (self.pil_image.size), 0)  
         draw_mask = ImageDraw.Draw(mask)
         # Dibujar círculo en la máscara
         draw_mask.ellipse((center_x - radius, 

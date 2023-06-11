@@ -1,5 +1,5 @@
 from app.models.colors import Color
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageDraw
 import random
 
 class Background():
