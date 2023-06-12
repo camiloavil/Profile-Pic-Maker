@@ -5,49 +5,71 @@ from app.models.colors import Color, Colors
 from typing import Optional
 from PIL import Image, ImageDraw, ImageFilter
 from rembg import remove
-import os
 import logging
+import os
 
 class Picture(): 
     _verbose = False
-    def __init__(self,url: Optional[str]=None, verbose = False) -> None:
+    def __init__(self,path: Optional[str]=None, verbose = False) -> None:
         Picture._verbose=verbose
         logging.basicConfig(level=logging.INFO)
-        if os.path.isfile(url) and (url.lower().endswith('.jpg') or url.lower().endswith('.png')):
-            logging.info(f'[Picture] init {url}')
-            self._url=url
+        if os.path.isfile(path) and (path.lower().endswith('.jpg') or path.lower().endswith('.png')):
+            logging.info(f'[Picture] init {path}')
+            self._path=path
         else:
-            logging.error(f'[Picture] Sorry "{url}" is not an Image file (jpg or png)')
-            self._url=None
+            logging.error(f'[Picture] Sorry "{path}" is not an Image file (jpg or png)')
+            self._path=None
 
-    def get_url(self):
-        return self._url
+    def get_path(self):
+        return self._path
     
-    def save(self,url:str):
-        pass
+    def save(self,path: Optional[str]=None):
+        if path is not None:
+            if os.path.exists(path) is False:
+                self._path=path
+                self.pil_image.save(self._path)
+            else:
+                logging.info('[Picture] let\'s save the pic on this path {}'.format(self._path))
+        elif self._path is not None:
+            self.pil_image.save(self._path)
+
+        logging.info('[Picture] pic saved on this path {}'.format(self._path))
+
 
 class BigPic(Picture):
     def get_faces(self):    #Metodo to indentify and get Faces of the big Pic
-        if self._url is None:
+        if self._path is None:
             logging.error('[BigPic] Sorry there is not a pic')
             return None
         
         # Get faces as a list of PIL images
-        faces = DetectingFaces_OP(file=self._url).get_PIL_faces()   
-        logging.info(f'[BigPic] {len(faces)} faces detected')        
+        faces = DetectingFaces_OP(file=self._path).get_PIL_faces()   
+        logging.info(f'[BigPic] {len(faces)} faces detected')
+        optional_path = None
+        if self._path.endswith('.jpg'):
+            optional_path = self._path.replace('.jpg','[FACE]_')
+        elif self._path.endswith('.png'):
+            optional_path = self._path.replace('.png','[FACE]_')
         #convert to isntancias of FacePic model        
-        return [FacePic(img=face) for face in faces]
-        
+        return [FacePic(img=face, path_Optional=optional_path+str(i)) for i,face in enumerate(faces)]
 
 class FacePic(Picture):
-    def __init__(self, url: Optional[str]=None, img=None ) -> None:
-        logging.info(f'[FacePic]init objeto FacePic url {url}')
-        if url is not None: 
-            super().__init__(url)
+    def __init__(self, 
+                 path: Optional[str]=None, 
+                 img=None, 
+                 path_Optional: Optional[str]=None) -> None:
+        if path is not None: 
+            super().__init__(path)
+            logging.info(f'[FacePic]init objeto FILE FacePic path {path}')
         if img is not None:
-            self.pil_image= img
+            self.pil_image=img
+            if path_Optional is not None:
+                self._path=path_Optional+'.png'
+                logging.info(f'[FacePic]init TEMPORAL objet FacePic path {self._path}')
+            else:
+                self._path=None
+                logging.info('[FacePic]init TEMPORAL objet FacePic whitout path')
         else:
-            # if Picture._verbose: print('[ERROR][FacePic]init empty objeto')
             logging.error('[FacePic]init empty objeto')
 
     def show(self):

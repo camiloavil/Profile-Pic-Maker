@@ -40,9 +40,9 @@ def file(file: str):
         face.setBorder(Color.BLACK)
         face.setBlur(30)
         face.show()
-        promp = input('Do you want to save it ?')
+        promp = input('Do you want to save it ? ')
         if promp == 'y' or promp == 'yes' or promp == 'si':
-            print("All rigth let's save it")
+            print(f"All rigth let's save it {face.get_path()}")
         else:
             print("Ok, don't worry")
 
