@@ -38,6 +38,8 @@ class Color(Enum):
     INFO = (23, 162, 184)
     LIGHT = (248, 249, 250)
     DARK = (52, 58, 64)
+    ORANGE = (255, 127, 39)
+    ORANGE_CARROT = (255, 165, 0)
     RED_A200 = (239, 83, 80)
     PINK_A200 = (233, 30, 99)
     PURPLE_A200 = (186, 104, 200)
@@ -52,6 +54,9 @@ class Color(Enum):
 class Colors(Enum):
     BLUE_SKY_TO_INDIGO = (Color.BLUE_SKY, Color.INDIGO_500)
     WET_ASPHALT_TO_GREEN_SEA = (Color.WET_ASPHALT, Color.GREEN_SEA)
+    BLUE_WHITE_CLEAN = (Color.BLUE_SKY, Color.WHITE)
+    BLUE_BLACK_CLEAN = (Color.BLUE_SKY, Color.BLACK)
+    ORANGE_BLACK_CLEAN = (Color.ORANGE, Color.BLACK)
     RED_TO_BLACK = (Color.RED_500, Color.BLACK)
     LIGHT_BLUE_A200_TO_BLACK = (Color.LIGHT_BLUE_A200, Color.BLACK)
     CUSTOM_COLORS_1_TO_2 = (Color.CUSTOM_COLOR_1, Color.CUSTOM_COLOR_2)

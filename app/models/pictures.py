@@ -50,7 +50,7 @@ class Picture():
         self.pil_image.save(self._path)
         logging.info('[Picture] pic saved on this path {}'.format(self._path))
 
-    def show(self,text: Optional[str]=None):
+    def show(self,time: int=0,text: Optional[str]=None):
         """
         Shows or closes the PIL image based on the value of the 'show' parameter.
         this will do whit the default view of the PIL image
@@ -70,6 +70,9 @@ class Picture():
         # Create a label to display the image
         label = tk.Label(image=photo)
         label.pack()
+        
+        if time > 0:
+            window.after(time*1000, window.destroy)
         # Start the GUI event loop
         window.mainloop()
 
