@@ -23,8 +23,23 @@ def dir(dir: str):
         print(f'Checking {dir} ...')
         for file in os.listdir(dir):
             if os.path.isfile(os.path.join(dir, file)) and file.endswith(".jpg"):
-                # print(f"\tlet's check this image -> {os.path.join(subdir, file)}")
                 print(f"\tlet's check this image -> {os.path.join(dir,file)}")
+                pic_faces = BigPic(os.path.join(dir,file),verbose=True).get_faces()   #get a list of FacePic objects
+                print(f'\t{len(pic_faces)} faces detected')
+                for face in pic_faces:
+                    face.show()
+                    promp = input('Do you want to continue whit this Pic ? (y/n) :')
+                    if promp == 'y' or promp == 'yes' or promp == 'si':
+                        face.removeBG()
+                        face.addBGPalette(Colors.WET_ASPHALT_TO_GREEN_SEA)
+                        face.set_contour()
+                        face.setBorder(Color.BLACK)
+                        face.setBlur(30)
+                        face.show()
+                        promp = input('Do you want to save it ? ')
+                        if promp == 'y' or promp == 'yes' or promp == 'si':
+                            print(f"All rigth let's save it {face.get_path()}")
+                            face.save()
     else:
         print(f'[ERROR] Sorry "{dir}" is not an active directory')
 
@@ -43,8 +58,7 @@ def file(file: str):
         promp = input('Do you want to save it ? ')
         if promp == 'y' or promp == 'yes' or promp == 'si':
             print(f"All rigth let's save it {face.get_path()}")
-        else:
-            print("Ok, don't worry")
+            face.save()
 
 @app.command()
 def test():

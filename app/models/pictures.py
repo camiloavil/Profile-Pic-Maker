@@ -3,7 +3,8 @@ from app.models.background import Background
 from app.models.colors import Color, Colors
 
 from typing import Optional
-from PIL import Image, ImageDraw, ImageFilter
+import tkinter as tk
+from PIL import Image, ImageDraw, ImageFilter, ImageTk
 from rembg import remove
 import logging
 import os
@@ -24,17 +25,53 @@ class Picture():
         return self._path
     
     def save(self,path: Optional[str]=None):
+        """
+        Save the picture to the given path. If no path is given and a path is already set, 
+        save the picture to the existing path. If no path is given and no path is set, 
+        do nothing. The path parameter is optional. 
+        
+        :param path: (Optional) The path to save the picture to.
+        :type path: str
+        
+        :return: None
+        :rtype: NoneType
+        """
         if path is not None:
             if os.path.exists(path) is False:
                 self._path=path
                 self.pil_image.save(self._path)
             else:
                 logging.info('[Picture] let\'s save the pic on this path {}'.format(self._path))
-        elif self._path is not None:
-            self.pil_image.save(self._path)
-
+        
+        if self._path is not None:
+            if os.path.exists(self._path):
+                logging.error(f'[Picture] this path {self._path} already exists')
+                return
+        self.pil_image.save(self._path)
         logging.info('[Picture] pic saved on this path {}'.format(self._path))
 
+    def show(self,text: Optional[str]=None):
+        """
+        Shows or closes the PIL image based on the value of the 'show' parameter.
+        this will do whit the default view of the PIL image
+
+        :param show: A boolean indicating whether to show or close the PIL image.
+        :type show: bool
+        """
+        logging.info('[Picture] Close the window to continue')
+        window = tk.Tk()
+        window.title('Close the window to continue')
+        # Copy the Imagen of PIL object
+        image_thumbnail = self.pil_image.copy()
+        # make a thumbnail of the image
+        image_thumbnail.thumbnail((250, 250))
+        # Create a PhotoImage object from the image
+        photo = ImageTk.PhotoImage(image_thumbnail)
+        # Create a label to display the image
+        label = tk.Label(image=photo)
+        label.pack()
+        # Start the GUI event loop
+        window.mainloop()
 
 class BigPic(Picture):
     def get_faces(self):    #Metodo to indentify and get Faces of the big Pic
@@ -71,10 +108,6 @@ class FacePic(Picture):
                 logging.info('[FacePic]init TEMPORAL objet FacePic whitout path')
         else:
             logging.error('[FacePic]init empty objeto')
-
-    def show(self):
-        """Show this pic"""
-        self.pil_image.show()
 
     def removeBG(self):
         """This function removes the th background of the pic using rembg module"""
