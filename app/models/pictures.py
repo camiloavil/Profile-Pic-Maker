@@ -75,6 +75,17 @@ class Picture():
             window.after(time*1000, window.destroy)
         # Start the GUI event loop
         window.mainloop()
+    
+    def resize(self, width: int, height: Optional[int]=None):
+        """
+        Resize the picture to the given width and height.
+        """
+        if height is None:
+            o_width, o_height = self.pil_image.size
+            height = int(width * o_height // o_width)
+            logging.info(f'[Picture] Resize {width} x {height}')
+
+        self.pil_image = self.pil_image.resize((width, height))
 
 class BigPic(Picture):
     def get_faces(self):    #Metodo to indentify and get Faces of the big Pic

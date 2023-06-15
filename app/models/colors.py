@@ -3,13 +3,13 @@ from enum import Enum
 class Color(Enum):
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
+    BROWN = (139, 69, 19)
+    BROWNDARK = (77, 77, 80)
     RED = (255, 0, 0)
     GREEN = (0, 255, 0)
     BLUE = (0, 0, 255)
     YELLOW = (255, 255, 0)
     BLUE_SKY = (135, 206, 250)   # Azul claro
-    CUSTOM_COLOR_1 = (100, 150, 200)
-    CUSTOM_COLOR_2 = (50, 100, 150)
     TURQUOISE = (26, 188, 156)
     EMERALD = (46, 204, 113)
     PETER_RIVER = (52, 152, 219)
@@ -51,15 +51,25 @@ class Color(Enum):
     TEAL_A200 = (0, 191, 165)
     GREEN_A200 = (100, 221, 23)
 
+    def get_color_rgb(color_name: str) -> tuple:
+        try:
+            # Look up the color in the Color enum (case insensitive)
+            return getattr(Color, color_name.upper())
+        except AttributeError:
+            raise ValueError(f'Invalid color name: {color_name}')
+        # return Color.BLACK.value
+
 class Colors(Enum):
     BLUE_SKY_TO_INDIGO = (Color.BLUE_SKY, Color.INDIGO_500)
     WET_ASPHALT_TO_GREEN_SEA = (Color.WET_ASPHALT, Color.GREEN_SEA)
     BLUE_WHITE_CLEAN = (Color.BLUE_SKY, Color.WHITE)
     BLUE_BLACK_CLEAN = (Color.BLUE_SKY, Color.BLACK)
     ORANGE_BLACK_CLEAN = (Color.ORANGE, Color.BLACK)
-    RED_TO_BLACK = (Color.RED_500, Color.BLACK)
+    RED_TO_BLACK_CLEAN = (Color.RED_500, Color.BLACK)
+    BROWN_TO_BLACK_CLEAN = (Color.BROWN, Color.BLACK)
+    BROWN_TO_WHITE_CLEAN = (Color.BROWN, Color.WHITE)
+    WHITE_TO_BROWNDARK_CLEAN = (Color.WHITE, Color.BROWNDARK)
     LIGHT_BLUE_A200_TO_BLACK = (Color.LIGHT_BLUE_A200, Color.BLACK)
-    CUSTOM_COLORS_1_TO_2 = (Color.CUSTOM_COLOR_1, Color.CUSTOM_COLOR_2)
     TURQUOISE_TO_EMERALD = (Color.TURQUOISE, Color.EMERALD)
     PETER_RIVER_TO_AMETHYST = (Color.PETER_RIVER, Color.AMETHYST)
     NEPHRITIS_TO_BELIZE_HOLE = (Color.NEPHRITIS, Color.BELIZE_HOLE)

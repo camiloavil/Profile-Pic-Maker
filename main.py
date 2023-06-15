@@ -1,10 +1,11 @@
 from app.removeBack.removeCloud import removeBG_one_pic
 from app.models.colors import Color, Colors
+from app.models.pictures import BigPic
+
 import os
 import time
-
 import typer
-from app.models.pictures import BigPic
+from typing_extensions import Annotated
 
 app = typer.Typer()
 
@@ -61,21 +62,36 @@ def dir(dir: str, y: bool = False):
         print(f'[ERROR] Sorry "{dir}" is not an active directory')
 
 @app.command()
-def file(file: str):
+def file(file: str,
+         colora: Annotated[str, typer.Option(help="Fisrt Color to use in the background, Default = White")] = "white",  # noqa: E501
+         colorb: Annotated[str, typer.Option(help="Last Color to use in the background, Default = Black")] = "black",  # noqa: E501
+         colorBorder: Annotated[str, typer.Option(help="Color to use for the border, Default = White")] = None,  # noqa: E501
+         osize: Annotated[bool, typer.Option(help="Origianl Size, Default = False")] = False,  # noqa: E501
+         ):
     """
     Runs facial recognition on an image given its file path.
     the apply a colorfull background to it 
     :param file: A string representing the file path of the image to process.
     :return: None
     """
-    print(f"Cheking '{file}' image")
+    Acolor = Color.get_color_rgb(colora)
+    Bcolor = Color.get_color_rgb(colorb)
+    BorderColor = None if colorBorder is None else Color.get_color_rgb(colorBorder)
+    print(f"Checking '{file}' image")
+    print(f"Checking Colors A:'{str(Acolor)}', B:'{str(Bcolor)}' Border:'{str(BorderColor)}'")
+    print(f"Checking Original Size: {str(osize)}")
     pic_faces = BigPic(file,verbose=True).get_faces()   #get a list of FacePic objects
     for face in pic_faces:
+        if osize is False:
+            print("RE SIZE PIC")
+            face.resize(500)
         face.removeBG()
-        # face.addBG(Color.BLUE_SKY,Color.BLACK)
-        face.addBGPalette(Colors.ORANGE_BLACK_CLEAN)
+        face.addBG(Acolor,Bcolor)
+        # face.addBGPalette(Colors.ORANGE_BLACK_CLEAN)
+        # face.addBGPalette(Colors.WHITE_TO_BROWNDARK_CLEAN)
         face.set_contour()
-        face.setBorder(Color.WHITE)
+        if BorderColor is not None:
+            face.setBorder(BorderColor)
         face.setBlur(30)
         face.show()
         promp = input('Do you want to save it ? ')
