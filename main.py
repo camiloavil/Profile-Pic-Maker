@@ -19,7 +19,12 @@ def scaning_dir_execute(dir):        #iterate into a directory looking for every
                 # ImageProcess(os.path.join(subdir, file), )
 
 @app.command()
-def dir(dir: str, y: bool = False):
+def dir(dir: str, 
+        colora: Annotated[str, typer.Option(help="Fisrt Color to use in the background, Default = White")] = "white",  # noqa: E501
+        colorb: Annotated[str, typer.Option(help="Last Color to use in the background, Default = Black")] = "black",  # noqa: E501
+        colorborder: Annotated[str, typer.Option(help="Color to use for the border, Default = White")] = None,  # noqa: E501
+        osize: Annotated[bool, typer.Option(help="Origianl Size, Default = False")] = False,  # noqa: E501
+        y: Annotated[bool, typer.Option(help="Force Yes, Default = False")] = False):
     """
     Runs a directory check and processes all .jpg files contained in it. 
     For each .jpg file found, it detects faces and prompts the user for further action, 
@@ -34,7 +39,12 @@ def dir(dir: str, y: bool = False):
     None
     """
     if os.path.isdir(dir):
+        Acolor = Color.get_color_rgb(colora)
+        Bcolor = Color.get_color_rgb(colorb)
+        BorderColor = None if colorborder is None else Color.get_color_rgb(colorborder)
         print(f'Checking {dir} ..., forcedYes = {y}')
+        print(f"Checking Colors A:'{str(Acolor)}', B:'{str(Bcolor)}' Border:'{str(BorderColor)}'")
+        print(f"Checking Original Size: {str(osize)}")
         for file in os.listdir(dir):
             if os.path.isfile(os.path.join(dir, file)) and file.endswith(".jpg"):
                 print(f"\tlet's check this image -> {os.path.join(dir,file)}")
@@ -47,10 +57,15 @@ def dir(dir: str, y: bool = False):
                     else:
                         promp = 'y'
                     if promp == 'y' or promp == 'yes' or promp == 'si':
+                        if osize is False:
+                            face.resize(500)
                         face.removeBG()
-                        face.addBGPalette(Colors.BLUE_BLACK_CLEAN)
+                        face.addBG(Acolor,Bcolor)
+                        # face.addBGPalette(Colors.BLUE_BLACK_CLEAN)
                         face.set_contour()
-                        face.setBorder(Color.WHITE)
+                        if BorderColor is not None:
+                            face.setBorder(BorderColor)
+                        # face.setBorder(Color.WHITE)
                         face.setBlur(30)
                         face.show(time=3)
                         if y is False:
@@ -65,8 +80,9 @@ def dir(dir: str, y: bool = False):
 def file(file: str,
          colora: Annotated[str, typer.Option(help="Fisrt Color to use in the background, Default = White")] = "white",  # noqa: E501
          colorb: Annotated[str, typer.Option(help="Last Color to use in the background, Default = Black")] = "black",  # noqa: E501
-         colorBorder: Annotated[str, typer.Option(help="Color to use for the border, Default = White")] = None,  # noqa: E501
+         colorborder: Annotated[str, typer.Option(help="Color to use for the border, Default = None")] = None,  # noqa: E501
          osize: Annotated[bool, typer.Option(help="Origianl Size, Default = False")] = False,  # noqa: E501
+         y: Annotated[bool, typer.Option(help="Force Yes, Default = False")] = False
          ):
     """
     Runs facial recognition on an image given its file path.
@@ -76,14 +92,13 @@ def file(file: str,
     """
     Acolor = Color.get_color_rgb(colora)
     Bcolor = Color.get_color_rgb(colorb)
-    BorderColor = None if colorBorder is None else Color.get_color_rgb(colorBorder)
+    BorderColor = None if colorborder is None else Color.get_color_rgb(colorborder)
     print(f"Checking '{file}' image")
     print(f"Checking Colors A:'{str(Acolor)}', B:'{str(Bcolor)}' Border:'{str(BorderColor)}'")
     print(f"Checking Original Size: {str(osize)}")
     pic_faces = BigPic(file,verbose=True).get_faces()   #get a list of FacePic objects
     for face in pic_faces:
         if osize is False:
-            print("RE SIZE PIC")
             face.resize(500)
         face.removeBG()
         face.addBG(Acolor,Bcolor)
@@ -94,15 +109,18 @@ def file(file: str,
             face.setBorder(BorderColor)
         face.setBlur(30)
         face.show()
-        promp = input('Do you want to save it ? ')
+        if y is False:
+            promp = input('Do you want to save it ? ')
+        else:
+            promp = 'y'
         if promp == 'y' or promp == 'yes' or promp == 'si':
             print(f"All rigth let's save it {face.get_path()}")
             face.save()
 
 @app.command()
-def test():
-    """Testing command"""
-    print('Testing ....')
+def showColors():
+    """Show all colors available"""
+    Color.print_all_names()
 
 if __name__ == '__main__':
     app()
