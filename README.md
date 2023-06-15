@@ -11,7 +11,7 @@ Allows saving the resulting images.
 # System Requirements
 
 Python 3.6 or higher.
-Python packages: OpenCV, numpy.
+Python packages: OpenCV, numpy, rembg, PIL
 
 &nbsp;
 
@@ -33,6 +33,15 @@ source env/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
+
+#### Make fun with it:
+```bash
+python main.py --help
+```
+
+# References
+- https://github.com/tiangolo/typer
+- https://github.com/danielgatis/rembg
 
 # Contributions
 All are welcome. If you find any issues or have ideas to improve this project, please open an issue or submit a pull request.
