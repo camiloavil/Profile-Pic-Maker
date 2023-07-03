@@ -1,22 +1,21 @@
-from app.removeBack.removeCloud import removeBG_one_pic
-from app.models.colors import Color, Colors
+from app.models.colors import Color
 from app.models.pictures import BigPic
 
 import os
-import time
+# import time
 import typer
 from typing_extensions import Annotated
 
 app = typer.Typer()
 
-def scaning_dir_execute(dir):        #iterate into a directory looking for every jpg file
-    for subdir, dirs, files in os.walk(dir):
-        for file in files:
-            if(file.endswith(".jpg")):
-                print(f"let's check this image -> {os.path.join(subdir, file)}")
-                removeBG_one_pic(os.path.join(subdir, file))
-                time.sleep(15)      #to no overprocess the API and get error
-                # ImageProcess(os.path.join(subdir, file), )
+# def scaning_dir_execute(dir):        #iterate into a directory looking for every jpg file
+#     for subdir, dirs, files in os.walk(dir):
+#         for file in files:
+#             if(file.endswith(".jpg")):
+#                 print(f"let's check this image -> {os.path.join(subdir, file)}")
+#                 removeBG_one_pic(os.path.join(subdir, file))
+#                 time.sleep(15)      #to no overprocess the API and get error
+#                 # ImageProcess(os.path.join(subdir, file), )
 
 @app.command()
 def dir(dir: str, 
