@@ -1,4 +1,4 @@
-from app.models.colors import Color
+from .colors import Color
 from PIL import Image, ImageDraw
 import random
 

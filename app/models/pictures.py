@@ -1,7 +1,8 @@
-from app.detection.facedetetion import DetectingFaces_OP
-from app.models.background import Background
-from app.models.colors import Color, Colors
-
+# APP
+from ..detection.facedetetion import DetectingFaces_OP
+from .background import Background
+from .colors import Color, Colors
+# Python
 from typing import Optional
 import tkinter as tk
 from PIL import Image, ImageDraw, ImageFilter, ImageTk

@@ -1,6 +1,7 @@
-from app.detection.box import Box
+from .box import Box
 from PIL import Image
-import cv2, os
+import cv2
+import os
 
 class DetectingFaces_OP:              #Detecting Faces by OpenCV
     #Settings
@@ -15,7 +16,8 @@ class DetectingFaces_OP:              #Detecting Faces by OpenCV
         self.image = cv2.imread(file)
 
     def _filterbysize(squares, totalarea, verbose = False): #Filter areas by percentage of area Maybe this will be gone
-        if verbose: print(f'Get {len(squares)} faces')
+        if verbose: 
+            print(f'Get {len(squares)} faces')
         faces = []
         for square in squares:
             box = Box(square)
@@ -23,7 +25,8 @@ class DetectingFaces_OP:              #Detecting Faces by OpenCV
             # if verbose: print(f'area = {areaPercentage_face} %')
             if areaPercentage_face > DetectingFaces_OP._setting_percentageSize:          #if % is more tha 1% is a Face
                 faces.append(box)
-        if verbose: print(f'Send {len(faces)} faces')
+        if verbose: 
+            print(f'Send {len(faces)} faces')
         return faces
 
     def get_cv2_faces(self):
