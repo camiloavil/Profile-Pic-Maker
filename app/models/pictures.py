@@ -8,6 +8,7 @@ import tkinter as tk
 from PIL import Image, ImageDraw, ImageFilter, ImageTk
 from rembg import remove
 import logging
+import threading
 import os
 
 class Picture(): 
@@ -25,7 +26,7 @@ class Picture():
     def get_path(self):
         return self._path
     
-    def save(self,path: Optional[str]=None):
+    def save(self,path: Optional[str]=None, tol: Optional[int] = None):
         """
         Save the picture to the given path. If no path is given and a path is already set, 
         save the picture to the existing path. If no path is given and no path is set, 
@@ -48,8 +49,35 @@ class Picture():
             if os.path.exists(self._path):
                 logging.error(f'[Picture] this path {self._path} already exists')
                 return
+        
         self.pil_image.save(self._path)
         logging.info('[Picture] pic saved on this path {}'.format(self._path))
+        if tol is not None:
+            t = threading.Timer(tol, self.delete_file)
+            t.start()
+            logging.info('[Picture] set TimeOfLife {} seconds to delete the file pic'.format(tol))
+
+
+    
+    def delete_file(self):
+        """
+        Deletes the picture file associated with the object.
+
+        This function checks if the `_path` attribute is not None. If it is not None, it attempts to delete the file at the specified path using the `os.remove()` function. If the file deletion is successful, it logs a message using the `logging.info()` function. If an exception occurs during the file deletion, an error message is logged using the `logging.error()` function.
+
+        Parameters:
+        - None
+
+        Returns:
+        - None
+        """
+        if self._path is not None:
+            try:
+                os.remove(self._path)
+                logging.info(f'[Picture] pic deleted from path: {self._path}')
+            except Exception as e:
+                logging.error(f'[Picture] error deleting pic from path: {self._path}. {str(e)}')
+        self._path = None
 
     def show(self,time: int=0,text: Optional[str]=None):
         """
