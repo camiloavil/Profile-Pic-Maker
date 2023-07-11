@@ -1,6 +1,48 @@
 from enum import Enum
 
-class Color(Enum):
+class ColorExamples(str,Enum):
+    BLACK = 'black'
+    WHITE = 'white'
+    BROWN = 'brown'
+    BROWNDARK = 'browndark'
+    RED = 'red'
+    GREEN = 'green'
+    BLUE = 'blue'
+    YELLOW = 'yellow'
+    BLUE_SKY = 'blue_sky'
+    TURQUOISE = 'turquoise'
+    EMERALD = 'emerald'
+    WET_ASPHALT = 'wet_asphalt'
+    GREEN_SEA = 'green_sea'
+    NEPHRITIS = 'nephritis'
+    MIDNIGHT_BLUE = 'midnight_blue'
+    INDIGO_500 = 'indigo_500'
+    RED_500 = 'red_500'
+    PINK_500 = 'pink_500'
+    PURPLE_500 = 'purple_500'
+    DEEP_PURPLE_500 = 'deep_purple_500'
+    BLUE_500 = "blue_500"
+    LIGHT_BLUE_500 = "light_blue_500"
+    CYAN_500 = "cyan_500"
+    TEAL_500 = "teal_500"
+    GREEN_500 = "green_500"
+    LIGHT = "light"
+    DARK = "dark"
+    ORANGE = "orange"
+    ORANGE_CARROT = "orange_carrot"
+    RED_A200 = "red_a200"
+    PINK_A200 = "pink_a200"
+    PURPLE_A200 = "purple_a200"
+    DEEP_PURPLE_A200 = "deep_purple_a200"
+    INDIGO_A200 = "indigo_a200"
+    BLUE_A200 = "blue_a200"
+    LIGHT_BLUE_A200 = "light_blue_a200"
+    CYAN_A200 = "cyan_a200"
+    TEAL_A200 = "teal_a200"
+    GREEN_A200 = "green_a200"
+
+
+class Color(tuple, Enum):
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
     BROWN = (139, 69, 19)
