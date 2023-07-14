@@ -1,5 +1,5 @@
 import importlib 
-from PIL import Image, ImageTk
+from PIL import Image
 
 def showPic(pil_image: Image, time: int=0):
         """
@@ -13,7 +13,7 @@ def showPic(pil_image: Image, time: int=0):
             None
         """
         tk = importlib.import_module('tkinter')
-
+        ImageTk = importlib.import_module('PIL.ImageTk')
         window = tk.Tk()
         window.title('Close the window to continue')
         # Copy the Imagen of PIL object
