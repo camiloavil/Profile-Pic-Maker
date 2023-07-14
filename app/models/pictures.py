@@ -2,10 +2,10 @@
 from ..detection.facedetetion import DetectingFaces_OP
 from .background import Background
 from .colors import Color, Colors
+from ..results.show import showPic
 # Python
 from typing import Optional
-import tkinter as tk
-from PIL import Image, ImageDraw, ImageFilter, ImageTk
+from PIL import Image, ImageDraw, ImageFilter
 from rembg import remove
 import logging
 import threading
@@ -56,8 +56,6 @@ class Picture():
             t = threading.Timer(tol, self.delete_file)
             t.start()
             logging.info('[Picture] set TimeOfLife {} seconds to delete the file pic'.format(tol))
-
-
     
     def delete_file(self):
         """
@@ -81,30 +79,19 @@ class Picture():
 
     def show(self,time: int=0,text: Optional[str]=None):
         """
-        Shows or closes the PIL image based on the value of the 'show' parameter.
-        this will do whit the default view of the PIL image
+        Displays an image in a window for a specified amount of time.
 
-        :param show: A boolean indicating whether to show or close the PIL image.
-        :type show: bool
+        Args:
+            time (int, optional): The duration in seconds to display the image. Defaults to 0.
+            text (str, optional): Additional text to display with the image. Defaults to None.
+
+        Returns:
+            None
         """
         logging.info('[Picture] Close the window to continue')
-        window = tk.Tk()
-        window.title('Close the window to continue')
-        # Copy the Imagen of PIL object
-        image_thumbnail = self.pil_image.copy()
-        # make a thumbnail of the image
-        image_thumbnail.thumbnail((250, 250))
-        # Create a PhotoImage object from the image
-        photo = ImageTk.PhotoImage(image_thumbnail)
-        # Create a label to display the image
-        label = tk.Label(image=photo)
-        label.pack()
-        
-        if time > 0:
-            window.after(time*1000, window.destroy)
-        # Start the GUI event loop
-        window.mainloop()
-    
+        showPic(self.pil_image.copy(), 
+                time=time)
+            
     def resize(self, width: int, height: Optional[int]=None):
         """
         Resize the picture to the given width and height.
