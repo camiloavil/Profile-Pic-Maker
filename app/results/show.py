@@ -1,6 +1,5 @@
-import tkinter as tk
+import importlib 
 from PIL import Image, ImageTk
-
 
 def showPic(pil_image: Image, time: int=0):
         """
@@ -13,6 +12,8 @@ def showPic(pil_image: Image, time: int=0):
         Returns:
             None
         """
+        tk = importlib.import_module('tkinter')
+
         window = tk.Tk()
         window.title('Close the window to continue')
         # Copy the Imagen of PIL object
@@ -29,4 +30,4 @@ def showPic(pil_image: Image, time: int=0):
             window.after(time*1000, window.destroy)
         # Start the GUI event loop
         window.mainloop()
-    
+        
