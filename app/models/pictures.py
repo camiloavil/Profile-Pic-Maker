@@ -1,7 +1,7 @@
 # APP
 from ..detection.facedetetion import DetectingFaces_OP
 from .background import Background
-from ..results.show import showPic
+# from ..results.show import showPic
 # Python
 from pydantic.color import Color
 from typing import Optional, Tuple
@@ -89,9 +89,8 @@ class Picture():
             None
         """
         logging.info('[Picture] Close the window to continue')
-        showPic(self.pil_image.copy(), 
-                time=time)
-            
+        # showPic(self.pil_image.copy(),time=time)
+        # This line doesn't work for a api funtion
     def resize(self, width: int, height: Optional[int]=None):
         """
         Resize the picture to the given width and height.
