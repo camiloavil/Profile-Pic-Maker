@@ -1,5 +1,6 @@
-from .colors import Color
+from typing import Tuple
 from PIL import Image, ImageDraw
+from pydantic.color import Color
 import random
 
 class Background():
@@ -56,11 +57,14 @@ class Background():
                 draw.line([(0, i), (self._pix_w - 1, i)], fill=color)
 
     def set_back_gradientC(self,
-                           colorCenter: Color, 
-                           colorOuter: Color, 
+                           colorModel: Tuple[Color], 
                            pColorcircle: float):
-        colorCenter_ = colorCenter.value
-        colorOuter_ = colorOuter.value
+        try:
+            colorCenter_ = colorModel[0].as_rgb_tuple()
+            colorOuter_ = colorModel[1].as_rgb_tuple()
+        except Exception as e:
+            print(f"[Background]set_back_gradientC Error setting Colors of background. {e}")
+            return
         draw = ImageDraw.Draw(self._background)
         center_x = self._pix_w // 2
         center_y = self._pix_h // 2
