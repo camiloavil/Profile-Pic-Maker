@@ -1,10 +1,11 @@
 # APP
 from ..detection.facedetetion import DetectingFaces_OP
 from .background import Background
-from .colors import Color, Colors
+from .colors import Colors
 from ..results.show import showPic
 # Python
-from typing import Optional
+from pydantic.color import Color
+from typing import Optional, Tuple
 from PIL import Image, ImageDraw, ImageFilter
 from rembg import remove
 import logging
@@ -173,15 +174,24 @@ class FacePic(Picture):
         """Take the two color to make the backgorund"""
         self.addBG(colors.value[0], colors.value[1])
 
-    def addBG(self, colorTop: Color, colorBottom: Color):
-        logging.info(f"[FacePic]addBG Let's add some background {self.pil_image.size}")
-        back = Background(self.pil_image.size)
-        # back.set_back_gradientV(colorTop,colorBottom,0.1)
-        back.set_back_gradientC(colorTop,colorBottom, 0.3)
-        self.pil_image = Image.alpha_composite(back.getBackground(), self.pil_image)
-        # merged_image.show()
+    # def addBG(self, colorTop: ColorKmi, colorBottom: ColorKmi):
+    #     logging.info(f"[FacePic]addBG Let's add some background {self.pil_image.size}")
+    #     back = Background(self.pil_image.size)
+    #     # back.set_back_gradientV(colorTop,colorBottom,0.1)
+    #     back.set_back_gradientC(colorTop,colorBottom, 0.3)
+    #     self.pil_image = Image.alpha_composite(back.getBackground(), self.pil_image)
+    #     # merged_image.show()
 
-    def setBorder(self, circle_color, circle_width=None):
+    def addBG(self, colorsModel: Tuple[Color]):
+        logging.info(f"[FacePic]addBG Let's add some background Center: {str(colorsModel[0])} Outer: {str(colorsModel[1])} size: {self.pil_image.size}")
+        back = Background(self.pil_image.size)
+        back.set_back_gradientC(colorsModel, 0.3)
+        try:
+            self.pil_image = Image.alpha_composite(back.getBackground(), self.pil_image)
+        except Exception as e:
+            logging.error(f"[FacePic]addBG Error setting the background. {e}")
+
+    def setBorder(self, circle_color : Color, circle_width=None):
         # Crea un objeto ImageDraw para dibujar en la imagen
         draw = ImageDraw.Draw(self.pil_image)
         # Obtiene las dimensiones de la self.pil_image
@@ -205,5 +215,5 @@ class FacePic(Picture):
                       centro[1] - radio, 
                       centro[0] + radio, 
                       centro[1] + radio),
-                      outline=circle_color.value, 
+                      outline=circle_color.as_rgb_tuple(), 
                       width=circle_width)

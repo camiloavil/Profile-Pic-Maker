@@ -1,3 +1,4 @@
+from pydantic.colors import Color
 from enum import Enum
 
 class ColorExamples(str,Enum):
