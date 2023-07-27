@@ -1,7 +1,6 @@
 # APP
 from ..detection.facedetetion import DetectingFaces_OP
 from .background import Background
-from .colors import Colors
 from ..results.show import showPic
 # Python
 from pydantic.color import Color
@@ -169,18 +168,6 @@ class FacePic(Picture):
         blurred_background = self.pil_image.filter(ImageFilter.GaussianBlur(blur))  
         # Combinar imagen difuminada con la original  
         self.pil_image = Image.alpha_composite(blurred_background, self.pil_image)    
-    
-    def addBGPalette(self, colors: Colors):
-        """Take the two color to make the backgorund"""
-        self.addBG(colors.value[0], colors.value[1])
-
-    # def addBG(self, colorTop: ColorKmi, colorBottom: ColorKmi):
-    #     logging.info(f"[FacePic]addBG Let's add some background {self.pil_image.size}")
-    #     back = Background(self.pil_image.size)
-    #     # back.set_back_gradientV(colorTop,colorBottom,0.1)
-    #     back.set_back_gradientC(colorTop,colorBottom, 0.3)
-    #     self.pil_image = Image.alpha_composite(back.getBackground(), self.pil_image)
-    #     # merged_image.show()
 
     def addBG(self, colorsModel: Tuple[Color]):
         logging.info(f"[FacePic]addBG Let's add some background Center: {str(colorsModel[0])} Outer: {str(colorsModel[1])} size: {self.pil_image.size}")
