@@ -1,7 +1,6 @@
 # APP
 from ..detection.facedetetion import DetectingFaces_OP
 from .background import Background
-# from ..results.show import showPic
 # Python
 from pydantic.color import Color
 from typing import Optional, Tuple
@@ -77,20 +76,6 @@ class Picture():
                 logging.error(f'[Picture] error deleting pic from path: {self._path}. {str(e)}')
         self._path = None
 
-    def show(self,time: int=0,text: Optional[str]=None):
-        """
-        Displays an image in a window for a specified amount of time.
-
-        Args:
-            time (int, optional): The duration in seconds to display the image. Defaults to 0.
-            text (str, optional): Additional text to display with the image. Defaults to None.
-
-        Returns:
-            None
-        """
-        logging.info('[Picture] Close the window to continue')
-        # showPic(self.pil_image.copy(),time=time)
-        # This line doesn't work for a api funtion
     def resize(self, width: int, height: Optional[int]=None):
         """
         Resize the picture to the given width and height.
